@@ -2,6 +2,8 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
+using System.Diagnostics;
+
 namespace Intermolecular
 {
     /// <summary>
@@ -70,8 +72,7 @@ namespace Intermolecular
                 Exit();
 
             // TODO: Add your update logic here
-            Physics.Update();
-
+            Physics.Update((float)gameTime.ElapsedGameTime.TotalMilliseconds);
             base.Update(gameTime);
         }
 

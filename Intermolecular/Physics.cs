@@ -16,7 +16,7 @@ namespace Intermolecular
             public Vector2 Position = Vector2.Zero;
             public Vector2 Velocity = Vector2.Zero;
 
-            public Vector2 Moment = Vector2.Zero;
+            public Vector2 Displacement = Vector2.Zero;
             public Vector2 Force = Vector2.Zero;
             
             public float Rotation = 0.0f;
@@ -38,10 +38,22 @@ namespace Intermolecular
                 Radius = _radius;
             }
 
-            public void Update()
+            public void Update(float dt)
             {
-                this.Velocity += this.Force/Mass;
-                this.Position += this.Velocity;
+                // force decomposition
+                Vector2 m = Vector2.Divide(Displacement, Displacement.Length());
+                Vector2 Fa = Vector2.Dot(Force, m) * m;
+                Vector2 Fb = Force - Fa;
+
+                // translation update
+                this.Velocity += Fa/Mass * dt;
+                this.Position += this.Velocity * dt;
+
+                // rotation update
+                float Torque = Fb.Length() * Displacement.Length();
+                float I = MathHelper.PiOver2 * this.Mass * this.Radius;
+                this.w += Torque / I * dt;
+                this.Rotation += this.w * dt;
             }
 
             public void Draw()
@@ -52,11 +64,11 @@ namespace Intermolecular
 
         public static List<PhysicalObject> Objects = new List<PhysicalObject>();
 
-        public static void Update()
+        public static void Update(float dt)
         {
             foreach (PhysicalObject obj in Objects)
             {
-                obj.Update();
+                obj.Update(dt);
             }
             return;
         }
