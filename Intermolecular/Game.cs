@@ -15,6 +15,7 @@ namespace Intermolecular
         SpriteBatch spriteBatch;
 
         Texture2DWrapper spaceship_texture = new Texture2DWrapper();
+        Texture2DWrapper thrust_texture    = new Texture2DWrapper();
 
         public Game()
         {
@@ -44,10 +45,16 @@ namespace Intermolecular
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
+            // spaceship
             spaceship_texture.texture = Content.Load<Texture2D>("Graphics/shuttle");
             spaceship_texture.Scale = 0.5f;
             spaceship_texture.spriteBatch = spriteBatch;
-            Physics.PhysicalObject spaceship = new Physics.PhysicalObject(spaceship_texture);
+            // thrust
+            thrust_texture.texture = Content.Load<Texture2D>("Graphics/thrust");
+            thrust_texture.Scale = 1.0f;
+            thrust_texture.spriteBatch = spriteBatch;
+
+            Physics.PhysicalObject spaceship = new Physics.SpaceShip(spaceship_texture, thrust_texture);
             Physics.Objects.Add(spaceship);
         }
 
